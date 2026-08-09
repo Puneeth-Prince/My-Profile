@@ -23,6 +23,12 @@
       (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
   }
 
+  function syncThemeColorMeta(theme) {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0B0D' : '#FBFCFD');
+  }
+  syncThemeColorMeta(currentTheme());
+
   document.addEventListener('DOMContentLoaded', function () {
 
     /* ---------- Theme toggle ---------- */
@@ -31,8 +37,7 @@
       toggle.addEventListener('click', function () {
         var next = currentTheme() === 'dark' ? 'light' : 'dark';
         root.setAttribute('data-theme', next);
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', next === 'dark' ? '#0A0B0D' : '#FBFCFD');
+        syncThemeColorMeta(next);
         try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
       });
     }

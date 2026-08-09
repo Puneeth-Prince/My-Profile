@@ -230,7 +230,7 @@ main, .nav, .footer { position: relative; z-index: 1; }
 }
 .icon-btn:hover svg { transform: rotate(12deg); }
 
-/* Show the icon for the theme you'd switch TO. */
+/* Show the icon for the current theme (sun = light, moon = dark). */
 :root:not([data-theme="light"]) .i-sun { display: none; }
 :root:not([data-theme="light"]) .i-moon { display: block; }
 @media (prefers-color-scheme: light) {
