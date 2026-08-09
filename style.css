@@ -887,7 +887,6 @@ main, .nav, .footer { position: relative; z-index: 1; }
   .nav-links a { padding: 12px 14px; font-size: 15px; }
   .nav-links a::after { display: none; }
   .nav-burger { display: grid; }
-  .nav-cta { display: none; }
   .stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .section { padding-block: 66px; }
   /* Lighter motion on smaller screens. */
