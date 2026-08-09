@@ -35,8 +35,7 @@ Plain HTML, CSS and vanilla JavaScript — no build step, no framework, no depen
 index.html   Markup and content
 style.css    Styling and theming
 script.js    Theme toggle, nav behaviour, scroll interactions
-resume.pdf   Downloadable resume — not committed yet; add your own PDF
-             at the repo root (linked from the nav, hero and footer)
+resume.pdf   Downloadable resume, linked from the nav, hero and footer
 ```
 
 ## Running locally
