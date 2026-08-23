@@ -162,7 +162,7 @@
     /* ---------- Staggered scroll reveal ---------- */
     if (!reduced && hasIO) {
       var groups = document.querySelectorAll(
-        '.section-head, .hero-copy, .hero-viz, .about-copy, .pillars, .stats, ' +
+        '.section-head, .hero-copy, .hero-photo, .about-copy, .pillars, .stats, ' +
         '.tl-item, .feature, .legend, .depth, .skill-group, .card, ' +
         '.building, .path, .learn-side, .contact-grid, .approach-h'
       );

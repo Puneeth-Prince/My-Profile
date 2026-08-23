@@ -73,8 +73,6 @@
   <div class="shell hero-grid">
 
     <div class="hero-copy">
-      <img class="portrait" src="portrait.jpg" alt="Puneeth" width="84" height="84" decoding="async" onerror="this.remove()">
-
       <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> Karnataka, India · Open to opportunities</p>
 
       <h1 class="hero-name" id="heroName">Puneeth</h1>
@@ -101,66 +99,10 @@
       </ul>
     </div>
 
-    <!-- Hero system visualization -->
-    <div class="hero-viz" aria-hidden="true">
-      <svg class="viz" viewBox="0 0 420 420" role="presentation" focusable="false">
-        <defs>
-          <pattern id="vgrid" width="28" height="28" patternUnits="userSpaceOnUse">
-            <path d="M28 0H0V28" fill="none" stroke="currentColor" stroke-width=".6" class="vgrid-line"/>
-          </pattern>
-          <linearGradient id="vflow" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" class="vstop-a"/>
-            <stop offset="100%" class="vstop-b"/>
-          </linearGradient>
-        </defs>
-
-        <rect x="10" y="10" width="400" height="400" rx="20" fill="url(#vgrid)" class="vgrid"/>
-
-        <!-- Connectors terminate on node edges so nothing draws
-             across a label. -->
-        <g class="vlines" fill="none" stroke="url(#vflow)" stroke-width="1.6" stroke-linecap="round">
-          <path class="vline" d="M120 122 L120 150 L185 150 L185 176"/>
-          <path class="vline" d="M300 122 L300 150 L235 150 L235 176"/>
-          <path class="vline" d="M210 228 L210 268"/>
-          <path class="vline" d="M210 268 L120 268 L120 304"/>
-          <path class="vline" d="M210 268 L300 268 L300 304"/>
-        </g>
-
-        <!-- nodes -->
-        <g class="vnodes">
-          <g class="vnode" style="--d:0s">
-            <rect x="58" y="70" width="124" height="52" rx="13"/>
-            <text x="120" y="101">C#</text>
-          </g>
-          <g class="vnode" style="--d:.9s">
-            <rect x="238" y="70" width="124" height="52" rx="13"/>
-            <text x="300" y="101">ASP.NET</text>
-          </g>
-
-          <g class="vnode vnode-core" style="--d:.45s">
-            <rect x="140" y="176" width="140" height="52" rx="13"/>
-            <text x="210" y="207">SQL Server</text>
-          </g>
-
-          <g class="vnode" style="--d:1.3s">
-            <rect x="58" y="304" width="124" height="52" rx="13"/>
-            <text x="120" y="335">.NET Core</text>
-          </g>
-          <g class="vnode" style="--d:.65s">
-            <rect x="238" y="304" width="124" height="52" rx="13"/>
-            <text x="300" y="335">AI / RAG</text>
-          </g>
-        </g>
-
-        <!-- drifting particles -->
-        <g class="vdots">
-          <circle cx="120" cy="150" r="2.4" style="--d:0s"/>
-          <circle cx="300" cy="160" r="2"   style="--d:1.4s"/>
-          <circle cx="210" cy="250" r="2.2" style="--d:2.2s"/>
-          <circle cx="160" cy="330" r="1.8" style="--d:3s"/>
-        </g>
-      </svg>
-      <p class="viz-caption">Software engineering</p>
+    <!-- Hero portrait -->
+    <div class="hero-photo">
+      <img src="puneeth.jpg" alt="Puneeth, Web Software Developer" width="856" height="848" decoding="async" fetchpriority="high">
+      <span class="hero-photo-tint" aria-hidden="true"></span>
     </div>
   </div>
 </section>
@@ -628,6 +570,7 @@
 
     <div class="contact-grid">
       <div class="contact-id">
+        <img class="portrait" src="puneeth.jpg" alt="Puneeth" width="72" height="72" decoding="async" loading="lazy">
         <p class="cname">Puneeth</p>
         <p class="crole">Web Software Developer 2</p>
         <p class="cloc">Karnataka, India</p>
