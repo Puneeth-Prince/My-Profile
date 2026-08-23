@@ -662,9 +662,11 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .t-strong { color: var(--text-2); background: var(--surface-2); border: 1px solid var(--border); }
 .t-explore { color: var(--text-3); background: transparent; border: 1px dashed var(--border-2); }
 
-/* ---------- Skill groups: asymmetric bento (6 cells: 2 wide + 4 narrow) ---------- */
+/* ---------- Skill groups: asymmetric bento (7 cells: two 1+2+1 rows + one full-width feature row) ---------- */
 .skill-map { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 20px; }
 .skill-map > :nth-child(2), .skill-map > :nth-child(5) { grid-column: span 2; }
+.skill-map > :nth-child(7) { grid-column: 1 / -1; }
+.skill-map > :nth-child(7) .chips { max-width: 78ch; }
 .skill-group {
   border: 1px solid var(--border);
   border-radius: var(--r-md); padding: 24px;
@@ -685,7 +687,12 @@ main, .nav, .footer { position: relative; z-index: 1; }
 .skill-group:hover .skill-head svg { transform: translateY(-2px) scale(1.08); }
 
 .approach { margin-top: 56px; }
-.approach-h { font-size: 20px; margin-bottom: 22px; }
+.approach-h { font-size: 20px; margin-bottom: 10px; }
+.approach-flow {
+  font-family: var(--f-mono); font-size: 12.5px; color: var(--text-3);
+  letter-spacing: .02em; margin-bottom: 24px;
+}
+.approach-flow span { color: var(--accent); margin-inline: 2px; }
 
 /* ---------- Currently building ---------- */
 .building {
