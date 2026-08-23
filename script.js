@@ -25,7 +25,7 @@
 
   function syncThemeColorMeta(theme) {
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0B0D' : '#FBFCFD');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0A0B' : '#FAFAF9');
   }
   syncThemeColorMeta(currentTheme());
 
@@ -164,7 +164,7 @@
       var groups = document.querySelectorAll(
         '.section-head, .hero-copy, .hero-viz, .about-copy, .pillars, .stats, ' +
         '.tl-item, .feature, .legend, .depth, .skill-group, .card, ' +
-        '.building, .path, .learn-side, .cta-inner, .contact-grid, .approach-h'
+        '.building, .path, .learn-side, .contact-grid, .approach-h'
       );
 
       var revealObserver = new IntersectionObserver(function (entries) {
@@ -181,7 +181,7 @@
       });
 
       // Stagger siblings within each row of cards.
-      ['.cards-3', '.cards-2', '.skill-map'].forEach(function (sel) {
+      ['.work-grid', '.approach-grid', '.skill-map'].forEach(function (sel) {
         Array.prototype.forEach.call(document.querySelectorAll(sel), function (row) {
           Array.prototype.forEach.call(row.children, function (child, i) {
             child.style.transitionDelay = Math.min(i, 5) * 70 + 'ms';
