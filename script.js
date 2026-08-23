@@ -232,5 +232,32 @@
 
       Array.prototype.forEach.call(counters, function (el) { countObserver.observe(el); });
     }
+
+    /* ---------- Magnetic hover + hero photo tilt ----------
+       Pointer-fine devices only; resets cleanly on leave. */
+    var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover && !reduced) {
+      var heroPhoto = document.querySelector('.hero-photo');
+      if (heroPhoto) {
+        heroPhoto.addEventListener('mousemove', function (e) {
+          var r = heroPhoto.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          heroPhoto.style.transform =
+            'perspective(900px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 7).toFixed(2) + 'deg)';
+        });
+        heroPhoto.addEventListener('mouseleave', function () { heroPhoto.style.transform = ''; });
+      }
+
+      Array.prototype.forEach.call(document.querySelectorAll('.btn-primary'), function (btn) {
+        btn.addEventListener('mousemove', function (e) {
+          var r = btn.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          btn.style.transform = 'translate(' + (x * 10).toFixed(1) + 'px,' + (y * 10).toFixed(1) + 'px)';
+        });
+        btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
+      });
+    }
   });
 })();
