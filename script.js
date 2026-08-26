@@ -28,7 +28,7 @@
     }
     function syncThemeColorMeta(theme) {
       var meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', theme === 'dark' ? '#0B0C0E' : '#FFFFFF');
+      if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#FFFFFF');
     }
     syncThemeColorMeta(currentTheme());
 
@@ -153,11 +153,18 @@
         });
       });
 
-      window.addEventListener('load', function () {
+      // Safety net: reveal everything shortly after load even if an
+      // observer never fires. script.js loads dynamically (after the
+      // nav/footer partials are injected), so the window 'load' event
+      // may have already happened by the time this listener registers
+      // - guard against that the same way ready() does above.
+      function armRevealFallback() {
         setTimeout(function () {
           Array.prototype.forEach.call(groups, function (el) { el.classList.add('is-in'); });
         }, 1600);
-      });
+      }
+      if (document.readyState === 'complete') armRevealFallback();
+      else window.addEventListener('load', armRevealFallback);
     } else {
       Array.prototype.forEach.call(
         document.querySelectorAll('.pillars, .depth'),
