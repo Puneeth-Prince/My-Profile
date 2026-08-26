@@ -1,7 +1,8 @@
-/* Puneeth — portfolio behaviour.
+/* Puneeth - portfolio behaviour.
    Vanilla, no dependencies. Every enhancement degrades safely:
    with JS disabled the page is fully readable and navigable.
-   Scroll work is batched through one rAF-throttled listener. */
+   Loaded dynamically by partials.js after nav/footer are injected,
+   so it must not assume DOMContentLoaded hasn't already fired. */
 (function () {
   'use strict';
 
@@ -11,27 +12,26 @@
 
   root.classList.add('js');
 
-  /* ---------- Theme (applied before paint: no flash) ---------- */
-  var THEME_KEY = 'theme';
-  try {
-    var saved = localStorage.getItem(THEME_KEY);
-    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
-  } catch (e) { /* storage blocked — fall back to OS preference */ }
-
-  function currentTheme() {
-    return root.getAttribute('data-theme') ||
-      (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
   }
 
-  function syncThemeColorMeta(theme) {
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0A0B' : '#FAFAF9');
-  }
-  syncThemeColorMeta(currentTheme());
+  ready(function () {
 
-  document.addEventListener('DOMContentLoaded', function () {
+    /* ---------- Theme toggle (attribute is set pre-paint by an inline
+       head script on every page; this just wires the button). ---------- */
+    var THEME_KEY = 'theme';
+    function currentTheme() {
+      return root.getAttribute('data-theme') ||
+        (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    }
+    function syncThemeColorMeta(theme) {
+      var meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute('content', theme === 'dark' ? '#0B0C0E' : '#FFFFFF');
+    }
+    syncThemeColorMeta(currentTheme());
 
-    /* ---------- Theme toggle ---------- */
     var toggle = document.getElementById('themeToggle');
     if (toggle) {
       toggle.addEventListener('click', function () {
@@ -65,6 +65,14 @@
       });
     }
 
+    /* ---------- Active nav item: which page is this? ---------- */
+    var currentPage = document.body.getAttribute('data-page');
+    if (links && currentPage) {
+      Array.prototype.forEach.call(links.querySelectorAll('a[data-page]'), function (a) {
+        if (a.getAttribute('data-page') === currentPage) a.classList.add('is-active');
+      });
+    }
+
     /* ---------- Skill depth dots ----------
        Built from data-level so the markup stays clean and the
        dot count can never drift out of sync with the label. */
@@ -86,10 +94,7 @@
     var nav      = document.getElementById('nav');
     var timeline = document.getElementById('timeline');
     var tlFill   = document.getElementById('tlFill');
-    var path     = document.getElementById('path');
-    var pathFill = document.getElementById('pathFill');
 
-    // Fraction of `el` that has been scrolled past, 0 → 1.
     function railProgress(el) {
       var r = el.getBoundingClientRect();
       var vh = window.innerHeight;
@@ -104,20 +109,13 @@
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(function () {
-        // Progress bar
         if (bar) {
           var h = document.documentElement.scrollHeight - window.innerHeight;
           var p = h > 0 ? window.scrollY / h : 0;
           bar.style.transform = 'scaleX(' + Math.max(0, Math.min(1, p)) + ')';
         }
-
-        // Nav background
         if (nav) nav.classList.toggle('is-stuck', window.scrollY > 8);
-
-        // Rails draw as their section passes through the viewport
         if (timeline && tlFill) tlFill.style.transform = 'scaleY(' + railProgress(timeline) + ')';
-        if (path && pathFill)   pathFill.style.transform = 'scaleY(' + railProgress(path) + ')';
-
         ticking = false;
       });
     }
@@ -126,45 +124,12 @@
     window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
 
-    /* ---------- Active section indicator ---------- */
-    var navAnchors = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
-    var sections = navAnchors
-      .map(function (a) { return document.querySelector(a.getAttribute('href')); })
-      .filter(Boolean);
-
-    if (sections.length && hasIO) {
-      var onScreen = new Set();
-
-      var navObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) onScreen.add(entry.target.id);
-          else onScreen.delete(entry.target.id);
-        });
-        if (!onScreen.size) return;
-
-        // Topmost visible section wins, so the highlight tracks
-        // whatever is actually being read.
-        var top = sections
-          .filter(function (s) { return onScreen.has(s.id); })
-          .sort(function (a, b) {
-            return a.getBoundingClientRect().top - b.getBoundingClientRect().top;
-          })[0];
-        if (!top) return;
-
-        navAnchors.forEach(function (a) {
-          a.classList.toggle('is-active', a.getAttribute('href') === '#' + top.id);
-        });
-      }, { rootMargin: '-18% 0px -62% 0px', threshold: 0 });
-
-      sections.forEach(function (s) { navObserver.observe(s); });
-    }
-
     /* ---------- Staggered scroll reveal ---------- */
     if (!reduced && hasIO) {
       var groups = document.querySelectorAll(
-        '.section-head, .hero-copy, .hero-photo, .about-copy, .pillars, .stats, ' +
+        '.page-hero, .section-head, .hero-copy, .hero-diagram, .about-copy, .pillars, .metrics, ' +
         '.tl-item, .feature, .legend, .depth, .skill-group, .card, ' +
-        '.building, .path, .learn-side, .contact-grid, .approach-h'
+        '.building, .contact-grid, .principle, .growth'
       );
 
       var revealObserver = new IntersectionObserver(function (entries) {
@@ -180,24 +145,20 @@
         revealObserver.observe(el);
       });
 
-      // Stagger siblings within each row of cards.
-      ['.work-grid', '.approach-grid', '.skill-map'].forEach(function (sel) {
+      ['.grid-2', '.grid-3', '.grid-4', '.bento-wide', '.skill-map', '.principles'].forEach(function (sel) {
         Array.prototype.forEach.call(document.querySelectorAll(sel), function (row) {
           Array.prototype.forEach.call(row.children, function (child, i) {
-            child.style.transitionDelay = Math.min(i, 5) * 70 + 'ms';
+            child.style.transitionDelay = Math.min(i, 5) * 60 + 'ms';
           });
         });
       });
 
-      // Safety net: never leave content hidden if an observer misfires.
       window.addEventListener('load', function () {
         setTimeout(function () {
           Array.prototype.forEach.call(groups, function (el) { el.classList.add('is-in'); });
-        }, 1800);
+        }, 1600);
       });
     } else {
-      // Reduced motion / no IO: mark the animated groups as settled
-      // so their child animations resolve to their final state.
       Array.prototype.forEach.call(
         document.querySelectorAll('.pillars, .depth'),
         function (el) { el.classList.add('is-in'); }
@@ -217,11 +178,11 @@
           var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
           if (isNaN(target)) return;
 
-          var duration = 1200, start = null;
+          var duration = 1100, start = null;
           function tick(now) {
             if (start === null) start = now;
             var p = Math.min((now - start) / duration, 1);
-            var eased = 1 - Math.pow(1 - p, 3);          // easeOutCubic
+            var eased = 1 - Math.pow(1 - p, 3);
             el.textContent = (target * eased).toFixed(decimals);
             if (p < 1) requestAnimationFrame(tick);
             else el.textContent = target.toFixed(decimals);
@@ -231,33 +192,6 @@
       }, { threshold: 0.5 });
 
       Array.prototype.forEach.call(counters, function (el) { countObserver.observe(el); });
-    }
-
-    /* ---------- Magnetic hover + hero photo tilt ----------
-       Pointer-fine devices only; resets cleanly on leave. */
-    var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (canHover && !reduced) {
-      var heroPhoto = document.querySelector('.hero-photo');
-      if (heroPhoto) {
-        heroPhoto.addEventListener('mousemove', function (e) {
-          var r = heroPhoto.getBoundingClientRect();
-          var x = (e.clientX - r.left) / r.width - 0.5;
-          var y = (e.clientY - r.top) / r.height - 0.5;
-          heroPhoto.style.transform =
-            'perspective(900px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 7).toFixed(2) + 'deg)';
-        });
-        heroPhoto.addEventListener('mouseleave', function () { heroPhoto.style.transform = ''; });
-      }
-
-      Array.prototype.forEach.call(document.querySelectorAll('.btn-primary'), function (btn) {
-        btn.addEventListener('mousemove', function (e) {
-          var r = btn.getBoundingClientRect();
-          var x = (e.clientX - r.left) / r.width - 0.5;
-          var y = (e.clientY - r.top) / r.height - 0.5;
-          btn.style.transform = 'translate(' + (x * 10).toFixed(1) + 'px,' + (y * 10).toFixed(1) + 'px)';
-        });
-        btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-      });
     }
   });
 })();

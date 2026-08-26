@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Enterprise Workflow Development | Puneeth</title>
+<meta name="description" content="Case study: turning a business requirement into a database-driven enterprise workflow, from architecture through testing and deployment.">
+<meta name="author" content="Puneeth">
+<meta name="theme-color" content="#0B0C0E">
+<link rel="canonical" href="https://puneeth-prince.github.io/My-Profile/case-studies/enterprise-workflow-development.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0C0E'/%3E%3Ctext x='32' y='44' font-family='Arial,sans-serif' font-weight='800' font-size='32' fill='%235B8DEF' text-anchor='middle'%3EP%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+
+<script>
+(function () {
+  var root = document.documentElement;
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'light' || t === 'dark') root.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+
+<body data-page="case-studies" data-base="../">
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+<div class="ambient" aria-hidden="true"><div class="ambient-grid"></div></div>
+
+<header class="nav" id="nav"><div id="navSlot"></div></header>
+
+<main id="main">
+
+<section class="page-hero">
+  <div class="shell">
+    <p class="breadcrumb"><a href="../index.html">Home</a> <span aria-hidden="true">/</span> <a href="../case-studies.html">Case Studies</a> <span aria-hidden="true">/</span> Enterprise Workflow Development</p>
+    <p class="page-kicker">Case Study 02</p>
+    <h1 class="page-title">Enterprise Workflow Development</h1>
+    <p class="page-sub">How a business requirement becomes a working, maintainable workflow inside an existing enterprise application.</p>
+    <ul class="chips" style="margin-top:20px"><li>C#</li><li>ASP.NET</li><li>SQL Server</li><li>Business rules</li></ul>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell-n">
+    <div class="tl-block">
+      <h4>Requirement</h4>
+      <p>A business team needs a new workflow, or a change to an existing one: an approval step, a new
+      status, a rule about who can do what and when. The requirement usually arrives informally and
+      needs to be clarified before any code changes.</p>
+    </div>
+    <div class="tl-block">
+      <h4>Architecture</h4>
+      <p>Work out where the change fits in the existing application: which tables and views it
+      touches, whether it needs a new status or role, and how it interacts with rules that are already
+      encoded elsewhere in the system, including edge cases nobody wrote down.</p>
+    </div>
+    <div class="tl-block">
+      <h4>Implementation</h4>
+      <ul class="checks">
+        <li>Database changes: tables, views or stored procedures as needed</li>
+        <li>Backend logic in C# and ASP.NET implementing the business rule</li>
+        <li>Frontend changes so the workflow is usable, not just technically correct</li>
+        <li>Role-based access so only the right people can take each action</li>
+      </ul>
+    </div>
+    <div class="tl-block">
+      <h4>Testing</h4>
+      <p>Verify the happy path first, then the edge cases: what happens with missing data, concurrent
+      updates, or a step being skipped. Test against realistic data, not just a clean development
+      dataset.</p>
+    </div>
+    <div class="tl-block">
+      <h4>Deployment</h4>
+      <p>Ship the change without breaking what already depends on the surrounding code, then confirm
+      with the business team that the workflow behaves as expected in practice, not just on paper.</p>
+    </div>
+
+    <p style="margin-top:30px"><a class="card-link" href="../case-studies.html">← All case studies</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer"><div id="footerSlot"></div></footer>
+
+<script src="../partials.js"></script>
+</body>
+</html>

@@ -1,51 +1,70 @@
 # Puneeth — Portfolio
 
-Personal portfolio site for Puneeth, a Web Software Developer with ~4.8 years of
-experience building enterprise web applications with C#, ASP.NET and SQL Server.
+Personal portfolio site for Puneeth, a Web Software Developer with ~5 years of
+experience building database-driven enterprise web applications with C#, ASP.NET
+and SQL Server.
 
 **Live:** https://puneeth-prince.github.io/My-Profile/
 
 ## About
 
-A single-page site covering:
+A multi-page site:
 
-- **About** — background and how I approach work
-- **Experience** — professional experience timeline
-- **Work** — enterprise applications and systems I've built and maintained
-- **Skills** — technology depth (core / strong / exploring) and skill breakdown by area
-- **Projects** — personal projects, including a local AI workspace (RAG over local
-  LLMs) and an in-progress SMS management app
-- **Learning** — current focus: modern .NET, ASP.NET Core, APIs, and AI applications
-- **Contact** — how to get in touch
+- **Home** (`index.html`) — hero, about, technical expertise, an experience teaser,
+  featured projects, engineering philosophy, career growth and CTAs into the deeper pages
+- **Experience** (`experience.html`) — full breakdown: responsibilities, engineering
+  problems, solutions and impact
+- **Projects** (`projects.html` + `projects/*.html`) — four professional projects,
+  each with its own Problem → Solution → Engineering → Result page, plus personal
+  projects (a local AI workspace and an in-progress SMS management app)
+- **Case Studies** (`case-studies.html` + `case-studies/*.html`) — deeper engineering
+  walkthroughs (database performance, workflow development, reporting)
+- **Résumé** (`resume.html`) — the complete professional background as a page (no
+  PDF is published yet)
+- **Contact** (`contact.html`) — how to get in touch
 
 ## Tech
 
-Plain HTML, CSS and vanilla JavaScript — no build step, no framework, no dependencies.
+Plain HTML, CSS and vanilla JavaScript — no build step, no framework, no
+third-party dependencies, no backend.
 
+- Shared nav and footer are single HTML partials (`partials/nav.html`,
+  `partials/footer.html`) fetched and injected by `partials.js` on every page, so
+  there's one nav/footer to maintain instead of one per file
 - Dark/light theme toggle, persisted to `localStorage`, applied before first paint
-  to avoid a flash of the wrong theme
+  via a small inline script in every page's `<head>` to avoid a flash of the wrong theme
 - Responsive layout with a mobile nav menu
-- Scroll progress bar and scroll-spy navigation
+- Scroll progress bar, per-page active nav state
 - Scroll-reveal animations, gated behind `prefers-reduced-motion`
-- Fully usable with JavaScript disabled — all content is static HTML underneath
+- Fully usable with JavaScript disabled — all content is static HTML underneath;
+  only the shared nav/footer chrome and the motion/interaction polish need JS
 
 ## Structure
 
 ```
-index.html   Markup and content
-style.css    Styling and theming
-script.js    Theme toggle, nav behaviour, scroll interactions
+index.html                              Home
+experience.html                         Full experience breakdown
+projects.html                           Projects index
+projects/*.html                         Individual project pages
+case-studies.html                       Case studies index
+case-studies/*.html                     Individual case study pages
+resume.html                             Résumé page
+contact.html                            Contact page
+partials/nav.html, partials/footer.html Shared nav/footer markup
+partials.js                             Fetches and injects the partials above
+style.css                               Styling and theming
+script.js                               Theme toggle, nav behaviour, scroll interactions
 ```
 
 ## Running locally
 
-No build tooling required — just serve the folder statically, e.g.:
+The nav/footer partials are loaded with `fetch()`, which browsers block over the
+`file://` protocol — so this now needs a static server rather than opening
+`index.html` directly:
 
 ```bash
 npx serve .
 ```
-
-or open `index.html` directly in a browser.
 
 ## Contact
 
